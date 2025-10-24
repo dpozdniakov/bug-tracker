@@ -5,7 +5,7 @@ pipeline {
         stage('Utit tests - Backend') {
             steps {
                 dir('bugracker-backend') {
-                   sh go test -v ./...
+                   sh 'go test -v ./...'
                 }
             }
         }
