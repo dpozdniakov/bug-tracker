@@ -22,8 +22,13 @@ pipeline {
                       export HOME=/tmp
                       # verify envs (optional)
                       go env GOPATH GOMODCACHE GOCACHE
-                      GOCACHE=$GOCACHE GOPATH=$GOPATH GOMODCACHE=$GOMODCACHE HOME=$HOME go test -v ./...
+                      GOCACHE=$GOCACHE GOPATH=$GOPATH GOMODCACHE=$GOMODCACHE HOME=$HOME go test -v ./... 2>&1 | go-junit-report > test-report.xml
                     '''
+                }
+            }
+            post {
+                always {
+                    junit 'bugtracker-backend/test-report.xml'
                 }
             }
         }
