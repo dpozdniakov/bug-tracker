@@ -36,9 +36,9 @@ pipeline {
             post {
                 always {
                     junit 'bugtracker-backend/test-report.xml'
-                    publishHtml(target: [
+                    publishHTML(target: [
                         allowMissing: false,
-                        alwaysLinkToLastBuild: false,
+                        alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'bugtracker-backend/reports',
                         reportFiles: 'coverage.txt',
