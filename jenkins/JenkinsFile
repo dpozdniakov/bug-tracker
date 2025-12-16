@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('Utit tests - Backend') {
+        stage('Unit tests - Backend') {
             agent{
                 docker {
                     image 'snakee/golang-junit:1.21'
@@ -22,13 +22,28 @@ pipeline {
                       export HOME=/tmp
                       # verify envs (optional)
                       go env GOPATH GOMODCACHE GOCACHE
-                      GOCACHE=$GOCACHE GOPATH=$GOPATH GOMODCACHE=$GOMODCACHE HOME=$HOME go test -v ./... 2>&1 | go-junit-report > test-report.xml
+                      GOCACHE=$GOCACHE GOPATH=$GOPATH GOMODCACHE=$GOMODCACHE HOME=$HOME
+                      go test -v ./... 2>&1 | go-junit-report > test-report.xml
+                      # Generate coverage report
+                      go test -coverprofile=coverage.out -covermode=atomic ./...
+                      go tool cover -func=coverage.out -o coverage.txt
+
+                      mkdir -p reports
+                      mv coverage.txt reports/
                     '''
                 }
             }
             post {
                 always {
                     junit 'bugtracker-backend/test-report.xml'
+                    publishHtml(target: [
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: 'bugtracker-backend/reports',
+                        reportFiles: 'coverage.txt',
+                        reportName: 'Code Coverage Report'
+                    ])
                 }
             }
         }
