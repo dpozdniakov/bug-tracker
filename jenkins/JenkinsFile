@@ -24,6 +24,7 @@ pipeline {
                       go env GOPATH GOMODCACHE GOCACHE
                       GOCACHE=$GOCACHE GOPATH=$GOPATH GOMODCACHE=$GOMODCACHE HOME=$HOME
                       go test -v ./... 2>&1 | go-junit-report > test-report.xml
+
                       # Generate coverage report
                       go test -coverprofile=coverage.out -covermode=atomic ./...
                       go tool cover -html=coverage.out -o coverage.html
@@ -36,11 +37,11 @@ pipeline {
             post {
                 always {
                     junit 'bugtracker-backend/test-report.xml'
-                    publishHTML target: [
+                    publishHTML ([
                         reportDir: 'bugtracker-backend/reports',
                         reportFiles: 'coverage.html',
                         reportName: 'Backend Coverage Report'
-                    ]
+                    ])
                 }
             }
         }
