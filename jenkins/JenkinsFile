@@ -29,7 +29,7 @@ pipeline {
                       go tool cover -func=coverage.out -o coverage.html
 
                       mkdir -p reports
-                      mv coverage.txt reports/
+                      mv coverage.html reports/
                     '''
                 }
             }
