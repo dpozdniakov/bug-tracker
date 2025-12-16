@@ -26,7 +26,7 @@ pipeline {
                       go test -v ./... 2>&1 | go-junit-report > test-report.xml
                       # Generate coverage report
                       go test -coverprofile=coverage.out -covermode=atomic ./...
-                      go tool cover -func=coverage.out -o coverage.txt
+                      go tool cover -func=coverage.out -o coverage.html
 
                       mkdir -p reports
                       mv coverage.txt reports/
@@ -41,7 +41,7 @@ pipeline {
                         alwaysLinkToLastBuild: true,
                         keepAll: true,
                         reportDir: 'bugtracker-backend/reports',
-                        reportFiles: 'coverage.txt',
+                        reportFiles: 'coverage.html',
                         reportName: 'Code Coverage Report'
                     ])
                 }
