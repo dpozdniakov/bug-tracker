@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+                GOCACHE = '/tmp/.cache/go-build'
+                HOME = '/tmp'
+                GOPATH = '/tmp/go'
+                GOMODCACHE = '/tmp/go/pkg/mod'
+                DOCKER_HOST = "tcp://jenkins-docker:2376"
+                DOCKER_CERT_PATH = "/certs/client"
+                DOCKER_TLS_VERIFY = "1"
+        }
     stages {
         stage('Unit tests - Backend') {
             agent{
@@ -9,12 +18,7 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment {
-                GOCACHE = '/tmp/.cache/go-build'
-                HOME = '/tmp'
-                GOPATH = '/tmp/go'
-                GOMODCACHE = '/tmp/go/pkg/mod'
-            }
+        
             steps {
                 dir('bugtracker-backend') {
                     sh '''
