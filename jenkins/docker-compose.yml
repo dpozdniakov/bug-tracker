@@ -20,8 +20,10 @@ services:
     image: my-jenkins
     container_name: my-jenkins
     restart: on-failure
+    depends_on:
+      - jenkins-docker
     environment:
-      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_HOST=tcp://jenkins-docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
       - JAVA_OPTS=-Dhudson.model.DirectoryBrowserSupport.CSP="default-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
