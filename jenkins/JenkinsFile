@@ -69,11 +69,14 @@ pipeline {
             post {
                 always {
                     junit 'bugtracker-frontend/test-results.xml'
-                    publishHTML target [
+                    publishHTML ([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
                         reportDir: 'bugtracker-frontend/reports/coverage',
                         reportFiles: 'index.html',
                         reportName: 'Frontend Coverage Report'
-                    ]
+                    ])
                 }
             }
         }
