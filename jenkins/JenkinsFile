@@ -125,6 +125,19 @@ pipeline {
                     '''
                 }
             }
+
+            post {
+                always {
+                    junit 'tests-api/test-results/results.xml'
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'tests-api/playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'API Test Report'
+                    ])
+                }
         }
     }
     post {
