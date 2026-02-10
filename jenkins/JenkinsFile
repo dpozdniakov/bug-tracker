@@ -107,6 +107,25 @@ pipeline {
                 // Add commands to launch your application here
             }
         }
+
+        stage('API Tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+                    reuseNode true
+                    args '-u 0 --network host'
+                }
+            }
+            steps {
+                dir('tests-api') {
+                    sh '''
+                      npx wait-port http://localhost:8080/api/health --timeout=300000
+                      npm ci
+                      npx playwright test
+                    '''
+                }
+            }
+        }
     }
     post {
         always {
