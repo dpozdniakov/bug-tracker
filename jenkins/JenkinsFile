@@ -140,6 +140,37 @@ pipeline {
                 }
             }
         }
+
+        stage ('UI Tests') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.50.0-jammy'
+                    reuseNode true
+                    args '-u 0 --network host'
+                }
+            }
+            steps {
+                dir('tests-ui') {
+                    sh '''
+                      npm ci
+                      npx playwright test
+                    '''
+                }
+            }
+
+            post {
+                always {
+                    junit 'tests-ui/test-results/results.xml'
+                    publishHTML([
+                        allowMissing: false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll: true,
+                        reportDir: 'tests-ui/playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'UI Test Report'
+                    ])
+                }
+            }
     }
     post {
         always {
