@@ -68,7 +68,7 @@ pipeline {
                     steps {
                         dir('bugtracker-frontend') {
                             sh '''
-                              npm ci
+                              npm install
                               npm test
                               rm -rf reports
                               mkdir -p reports
@@ -120,7 +120,7 @@ pipeline {
                 dir('tests-api') {
                     sh '''
                       npx wait-port http://localhost:8080/api/health --timeout=300000
-                      npm ci
+                      npm install
                       npx playwright test
                     '''
                 }
@@ -152,7 +152,7 @@ pipeline {
             steps {
                 dir('tests-ui') {
                     sh '''
-                      npm ci
+                      npm install
                       npx playwright test
                     '''
                 }
