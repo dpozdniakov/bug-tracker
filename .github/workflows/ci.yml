@@ -28,7 +28,7 @@ jobs:
         run: |
           go test -json -coverprofile=coverage.out -covermode=atomic ./...
           go tool cover -func=coverage.out > coverage.txt
-          
+
           echo "## Go Test Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           cat coverage.txt >> $GITHUB_STEP_SUMMARY
@@ -61,7 +61,12 @@ jobs:
         working-directory: ./bugtracker-frontend
         run: |
           npm install
-          npm test
+          npm test | tee full_output.txt
+
+          echo "## Frontend Test Output" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          cat full_output.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Publish Frontend Results
         uses: dorny/test-reporter@v1
