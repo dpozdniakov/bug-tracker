@@ -21,7 +21,7 @@ jobs:
 
       - name: Install go-junit-report
         run: |
-          go install github.com/jstemmer/go-junit-report@v2latest    
+          go install github.com/jstemmer/go-junit-reportv2@latest    
 
       - name: Execute unit tests for backend
         working-directory: ./bugtracker-backend
