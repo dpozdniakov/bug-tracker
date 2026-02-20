@@ -29,7 +29,7 @@ jobs:
           go install github.com/jstemmer/go-junit-report/v2@latest
 
       - name: Execute unit tests for backend
-        id: test-backend
+        id: coverage
         working-directory: ./bugtracker-backend
         run: |
           go test -json -coverprofile=coverage.out -covermode=atomic ./... | go-junit-report -set-exit-code > test-results.xml
@@ -40,9 +40,11 @@ jobs:
           cat coverage.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
 
-          echo "report<<EOF" >> $GITHUB_OUTPUT
-          cat coverage.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          {
+            echo "report<<EOF"
+            cat coverage.txt
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Publish Backend Results
         uses: dorny/test-reporter@v1
