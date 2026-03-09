@@ -130,5 +130,5 @@ jobs:
 
       - name: Launch application with Docker Compose
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
           npx wait-port http://localhost:8080/api/health --timeout 30000
