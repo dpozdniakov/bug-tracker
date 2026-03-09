@@ -132,3 +132,9 @@ jobs:
         run: |
           docker compose up -d --build
           npx wait-port http://localhost:8080/api/health --timeout 30000
+
+      - name: Execute API tests
+        working-directory: ./tests-api
+        run: |
+          npm ci
+          npx playwright test
