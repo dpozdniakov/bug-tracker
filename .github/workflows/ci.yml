@@ -138,6 +138,9 @@ jobs:
         run: |
           npm ci
           npx playwright test
+      
+      - name: Shutdown Docker Compose
+        run: docker compose down
 
       - name: Publish API Test Results
         if : always()
